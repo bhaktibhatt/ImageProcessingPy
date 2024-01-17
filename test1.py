@@ -21,14 +21,14 @@ class ImageReader:
             pytesseract.tesseract_cmd = windows_path
             print('Running on: Windows\n')
 
-    def extract_text(self, image: str, lang: Language, cfg: str) -> str:
+    def extract_text(self, image: str, lang: Language) -> str:
         img = Image.open(image)
-        extracted_text = pytesseract.image_to_string(img, lang=lang.value, config=cfg)
+        extracted_text = pytesseract.image_to_string(img, lang=lang.value)
         return extracted_text
     
 if __name__ == '__main__':
     ir = ImageReader(OS.Windows)
-    cfg1 = r'--psm 11 --oem 3'
-    text = ir.extract_text('test_imgs/logos.webp', lang = Language.ENG, cfg=cfg1)
+    # cfg1 = r'--psm 11 --oem 3'
+    text = ir.extract_text('test_imgs/logos.webp', lang = Language.ENG)
     # processed_text = ' ' .join(text.split())
     print(text)
