@@ -25,7 +25,7 @@ class ImageReader:
             print('Running on: Windows\n')
 
 # Load image
-img = np.array(Image.open('ImageProcessingPy/test_imgs/meme8.jpg'))
+img = np.array(Image.open('E:/Z+/Image Processing/ImageProcessingPy/test_imgs/meme7.jpg'))
 
 # Display plain image
 plt.figure(figsize=(10, 10))
@@ -35,8 +35,8 @@ plt.xticks([])
 plt.yticks([])
 plt.show()
 
-# Perform OCR on plain image
-text = pytesseract.image_to_string(img)
+# Perform OCR on plain image with psm and oem parameters
+text = pytesseract.image_to_string(img, config='--psm 12 --oem 3')  # Adjust psm and oem values as needed
 print(text.replace('\n', ' '))
 
 # Apply bilateral filter
@@ -80,11 +80,11 @@ def preprocess_finale(img):
     return img
 
 # Load image again for preprocessing
-img = np.array(Image.open('ImageProcessingPy/test_imgs/meme8.jpg'))
+img = np.array(Image.open('E:/Z+/Image Processing/ImageProcessingPy/test_imgs/meme7.jpg'))
 
 # Preprocess image using the correct function name
 img = preprocess_finale(img)
 
-# Perform OCR on preprocessed image
-text = pytesseract.image_to_string(img, lang='eng')
+# Perform OCR on preprocessed image with psm and oem parameters
+text = pytesseract.image_to_string(img, lang='eng', config='--psm 12 --oem 3')  # Adjust psm and oem values as needed
 print(text.replace('\n', ' '))
