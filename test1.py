@@ -25,7 +25,7 @@ class ImageReader:
             print('Running on: Windows\n')
 
 # Load image
-img = np.array(Image.open('E:/Z+/Image Processing/ImageProcessingPy/test_imgs/meme7.jpg'))
+img = np.array(Image.open('test_imgs\meme7.jpg'))
 
 # Display plain image
 plt.figure(figsize=(10, 10))
@@ -80,7 +80,7 @@ def preprocess_finale(img):
     return img
 
 # Load image again for preprocessing
-img = np.array(Image.open('E:/Z+/Image Processing/ImageProcessingPy/test_imgs/meme7.jpg'))
+img = np.array(Image.open('test_imgs\meme8.jpg'))
 
 # Preprocess image using the correct function name
 img = preprocess_finale(img)
