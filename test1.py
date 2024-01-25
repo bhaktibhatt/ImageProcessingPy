@@ -1,6 +1,9 @@
 from PIL import Image
-from pytesseract import pytesseract
-import enum #to extract text or values one by one
+import numpy as np
+import matplotlib.pyplot as plt
+import cv2
+import pytesseract
+import enum
 
 class OS(enum.Enum):
     Mac = 0
@@ -18,17 +21,70 @@ class ImageReader:
             print('Running on: MAC\n')
         if os == OS.Windows:
             windows_path = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
-            pytesseract.tesseract_cmd = windows_path
+            pytesseract.pytesseract.tesseract_cmd = windows_path
             print('Running on: Windows\n')
 
-    def extract_text(self, image: str, lang: Language) -> str:
-        img = Image.open(image)
-        extracted_text = pytesseract.image_to_string(img, lang=lang.value)
-        return extracted_text
-    
-if __name__ == '__main__':
-    ir = ImageReader(OS.Windows)
-    # cfg1 = r'--psm 11 --oem 3'
-    text = ir.extract_text('test_imgs/logos.webp', lang = Language.ENG)
-    # processed_text = ' ' .join(text.split())
-    print(text)
+# Load image
+img = np.array(Image.open('ImageProcessingPy/test_imgs/meme8.jpg'))
+
+# Display plain image
+plt.figure(figsize=(10, 10))
+plt.title('PLAIN IMAGE')
+plt.imshow(img)
+plt.xticks([])
+plt.yticks([])
+plt.show()
+
+# Perform OCR on plain image
+text = pytesseract.image_to_string(img)
+print(text.replace('\n', ' '))
+
+# Apply bilateral filter
+img = cv2.bilateralFilter(img, 5, 55, 60)
+
+# Display image after bilateral filter
+plt.figure(figsize=(10, 10))
+plt.title('BILATERAL FILTER')
+plt.imshow(img)
+plt.xticks([])
+plt.yticks([])
+plt.show()
+
+# Convert to grayscale
+img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+# Display grayscale image
+plt.figure(figsize=(10, 10))
+plt.title('GRAYSCALE IMAGE')
+plt.imshow(img, cmap='gray')
+plt.xticks([])
+plt.yticks([])
+plt.show()
+
+# Binarize image
+_, img = cv2.threshold(img, 240, 255, 1)
+
+# Display binary image
+plt.figure(figsize=(10, 10))
+plt.title('IMMAGINE BINARIA')
+plt.imshow(img, cmap='gray')
+plt.xticks([])
+plt.yticks([])
+plt.show()
+
+# Define the correct function name
+def preprocess_finale(img):
+    img = cv2.bilateralFilter(img, 5, 55, 60)
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    _, img = cv2.threshold(img, 240, 255, 1)
+    return img
+
+# Load image again for preprocessing
+img = np.array(Image.open('ImageProcessingPy/test_imgs/meme8.jpg'))
+
+# Preprocess image using the correct function name
+img = preprocess_finale(img)
+
+# Perform OCR on preprocessed image
+text = pytesseract.image_to_string(img, lang='eng')
+print(text.replace('\n', ' '))
